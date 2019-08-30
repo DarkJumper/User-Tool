@@ -1,0 +1,20 @@
+# Created by .ignore support plugin (hsz.mobi)
+.gitignore
+__pycache__/
+venv/Include/
+venv/Lib/
+venv/Scripts/easy_install-3.7-script.py
+venv/Scripts/easy_install-3.7.exe
+venv/Scripts/easy_install-3.7.exe.manifest
+venv/Scripts/easy_install-script.py
+venv/Scripts/easy_install.exe
+venv/Scripts/easy_install.exe.manifest
+venv/Scripts/pip-script.py
+venv/Scripts/pip.exe
+venv/Scripts/pip.exe.manifest
+venv/Scripts/pip3-script.py
+venv/Scripts/pip3.7-script.py
+venv/Scripts/pip3.7.exe
+venv/Scripts/pip3.7.exe.manifest
+venv/Scripts/pip3.exe
+venv/Scripts/pip3.exe.manifest
