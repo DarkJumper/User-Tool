@@ -59,10 +59,19 @@ class TrendEvaluate():
                 return y
 
     def to_Excel(self,Data, Header):
-        print(Header)
-        print(Data)
-        #df1 = pd.DataFrame(Data, columns=Header)
-        #df1.to_excel("output.xlsx")  # doctest: +SKIP
+        result_header = []
+        result = []
+        for column in Header:
+            result_header = result_header + column
+        df = pd.DataFrame(columns=result_header)
+        for list in Data:
+            if not list:
+                result_data = [' ',' ',' ',' ']
+                result = result_data
+            for row in list:
+                result = result + row
+                df = df.append(result, ignore_index=True)
+        df.to_excel("output.xlsx")  # doctest: +SKIP
 
 
 MSR = ['Q1001','Q1029_Ist']#,'Q1101','Q1301','Q1501','Q1701','Q1801','Q1901','Q1914']
