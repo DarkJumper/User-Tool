@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import filedialog
+from datetime import *
 import FGR_Rename
+import TrendAuslesen
 
 
 # Klasse definieren
@@ -108,7 +110,7 @@ class App:
         self.safe_settings_button_Trend = tk.Button(self.Trend_frame, text="Zurück!", height=1, width=10,
                                                     background='#FE2E2E',
                                                     command=self.safe_settings_Trend)
-        self.button_Trend_Auswerten = tk.Button(self.Trend_frame, text="Auswerten!", height=1, width=10)
+        self.button_Trend_Auswerten = tk.Button(self.Trend_frame, text="Auswerten!", height=1, width=10, command=self.Trend_Auswerten_Aufrufen)
         self.setting_entry_Date_begin = tk.Entry(self.Trend_frame, width="10")
         self.setting_entry_Date_end = tk.Entry(self.Trend_frame, width="10")
         self.setting_entry_time_begin = tk.Entry(self.Trend_frame, width="10")
@@ -116,8 +118,8 @@ class App:
         self.MSR_entry = tk.Entry(self.Trend_frame, width="35")
         self.setting_entry_Date_begin.insert(8, 'TT.MM.JJ')
         self.setting_entry_Date_end.insert(8, 'TT.MM.JJ')
-        self.setting_entry_time_begin.insert(8, 'HH.MM.SS')
-        self.setting_entry_time_end.insert(8, 'HH.MM.SS')
+        self.setting_entry_time_begin.insert(8, 'HH:MM:SS')
+        self.setting_entry_time_end.insert(8, 'HH:MM:SS')
         self.MSR_entry.insert(8, 'P1000,L1000,...')
         self.head_label_trend.grid(row=0, column=0, columnspan=5)
         self.button_Trend_Auswerten.grid(row=3, column=4)
@@ -178,10 +180,63 @@ class App:
         # Hauptframe starten
         self.set_main_frame()
 
+    def Trend_Auswerten_Aufrufen(self):
+        MSR = self.MSR_entry.get().split(",")
+        try:
+            date_begin = datetime.strptime(self.setting_entry_Date_begin.get(), '%d.%m.%y')
+            date_end = datetime.strptime(self.setting_entry_Date_end.get(), '%d.%m.%y')
+            time_begin = datetime.strptime(self.setting_entry_time_begin.get() +".000", '%H:%M:%S.%f')
+            time_end = datetime.strptime(self.setting_entry_time_end.get() +".000", '%H:%M:%S.%f')
+            TrendAuslesen.TrendEvaluate(MSR,datetime.combine(date_begin.date(), time_begin.time()),
+                                        datetime.combine(date_end.date(), time_end.time()))
+            self.Message()
+        except ValueError:
+            # rename Frame Definieren
+            self.pop_up = tk.Frame(self.master)
+            # Hauptframe schließen
+            self.Trend_frame.destroy()
+            self.pop_up.pack()
+            self.head_label_pop_up = tk.Label(self.pop_up, text='Falscher Datentyp eingegeben!', font=('Arial', 16))
+            self.safe_settings_button_pop_up = tk.Button(self.pop_up, text="Zurück!", height=1, width=20,
+                                                         background='#FE2E2E',
+                                                         command=self.pop_up_close)
+            self.head_label_pop_up.grid(row=0, column=0, columnspan=2)
+            self.safe_settings_button_pop_up.grid(row=1, column=0, columnspan=2)
+            self.master.mainloop()
+
+    def Message(self):
+        # rename Frame Definieren
+        self.Message = tk.Frame(self.master)
+        # Hauptframe schließen
+        self.Trend_frame.destroy()
+        self.Message.pack()
+        self.head_label_message = tk.Label(self.Message, text='Trenddaten Erfolgreich Ausgewertet',
+                                           font=('Arial', 14), fg="green")
+        self.safe_settings_button_message = tk.Button(self.Message, text="Zurück!", height=1, width=20,
+                                                     background='#FE2E2E',
+                                                     command=self.Message_close)
+        self.head_label_message.grid(row=0, column=0, columnspan=2)
+        self.safe_settings_button_message.grid(row=1, column=0, columnspan=2)
+        self.master.mainloop()
+
     # Zum Hauptfenster zurückkehren
     def safe_settings_SFP(self):
         # Einstellungsframe schließen
         self.SFP_frame.destroy()
+        # Hauptframe starten
+        self.set_main_frame()
+
+    # Zum Hauptfenster zurückkehren
+    def pop_up_close(self):
+        # Einstellungsframe schließen
+        self.pop_up.destroy()
+        # Hauptframe starten
+        self.Trend_Auswerten()
+
+    # Zum Hauptfenster zurückkehren
+    def Message_close(self):
+        # Einstellungsframe schließen
+        self.Message.destroy()
         # Hauptframe starten
         self.set_main_frame()
 
