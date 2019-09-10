@@ -3,6 +3,7 @@ from tkinter import filedialog
 from datetime import *
 import FGR_Rename
 import TrendAuslesen
+import PRT_confi
 
 
 # Klasse definieren
@@ -29,7 +30,7 @@ class App:
         self.trend_button = tk.Button(self.main_frame, text="Trend Auswerten", height=1, width=20, background='#BFFF00',
                                       command=self.Trend_Auswerten)
         self.PRT_button = tk.Button(self.main_frame, text="PRT Erstellen", height=1, width=20, background='#FAAC58',
-                                    command=self.Prt_Erstellen)
+                                    command=PRT_confi.PrtConfig)
         self.Info_button = tk.Button(self.main_frame, text="INFO!", height=1, width=20, background='#F7FE2E',
                                      command=self.INFO)
         self.copyright = tk.Label(self.main_frame, text='Copyright: Peter Schwarz', font=('Arial', 8))
@@ -110,7 +111,8 @@ class App:
         self.safe_settings_button_Trend = tk.Button(self.Trend_frame, text="Zurück!", height=1, width=10,
                                                     background='#FE2E2E',
                                                     command=self.safe_settings_Trend)
-        self.button_Trend_Auswerten = tk.Button(self.Trend_frame, text="Auswerten!", height=1, width=10, command=self.Trend_Auswerten_Aufrufen)
+        self.button_Trend_Auswerten = tk.Button(self.Trend_frame, text="Auswerten!", height=1, width=10,
+                                                command=self.Trend_Auswerten_Aufrufen)
         self.setting_entry_Date_begin = tk.Entry(self.Trend_frame, width="10")
         self.setting_entry_Date_end = tk.Entry(self.Trend_frame, width="10")
         self.setting_entry_time_begin = tk.Entry(self.Trend_frame, width="10")
@@ -134,19 +136,6 @@ class App:
         self.MSR_entry.grid(row=1, column=1, padx=1, pady=1, ipady=3, columnspan=5)
         self.label_MSR.grid(row=1, column=0)
         self.safe_settings_button_Trend.grid(row=4, column=4)
-        self.master.mainloop()
-
-    def Prt_Erstellen(self):
-        # rename Frame Definieren
-        self.Prt_frame = tk.Frame(self.master)
-        # Hauptframe schließen
-        self.main_frame.destroy()
-        self.Prt_frame.pack()
-        self.head_label_Prt = tk.Label(self.Prt_frame, text='PRT Erstellen ist noch in Arbeit!')
-        self.safe_settings_button_Prt = tk.Button(self.Prt_frame, text="Zurück!", height=1, width=20,
-                                                  command=self.safe_settings_Prt)
-        self.head_label_Prt.grid(row=0, column=0, columnspan=2)
-        self.safe_settings_button_Prt.grid(row=3, column=1)
         self.master.mainloop()
 
     def INFO(self):
@@ -185,9 +174,9 @@ class App:
         try:
             date_begin = datetime.strptime(self.setting_entry_Date_begin.get(), '%d.%m.%y')
             date_end = datetime.strptime(self.setting_entry_Date_end.get(), '%d.%m.%y')
-            time_begin = datetime.strptime(self.setting_entry_time_begin.get() +".000", '%H:%M:%S.%f')
-            time_end = datetime.strptime(self.setting_entry_time_end.get() +".000", '%H:%M:%S.%f')
-            TrendAuslesen.TrendEvaluate(MSR,datetime.combine(date_begin.date(), time_begin.time()),
+            time_begin = datetime.strptime(self.setting_entry_time_begin.get() + ".000", '%H:%M:%S.%f')
+            time_end = datetime.strptime(self.setting_entry_time_end.get() + ".000", '%H:%M:%S.%f')
+            TrendAuslesen.TrendEvaluate(MSR, datetime.combine(date_begin.date(), time_begin.time()),
                                         datetime.combine(date_end.date(), time_end.time()))
             self.Message()
         except ValueError:
@@ -213,8 +202,8 @@ class App:
         self.head_label_message = tk.Label(self.Message, text='Trenddaten Erfolgreich Ausgewertet',
                                            font=('Arial', 14), fg="green")
         self.safe_settings_button_message = tk.Button(self.Message, text="Zurück!", height=1, width=20,
-                                                     background='#FE2E2E',
-                                                     command=self.Message_close)
+                                                      background='#FE2E2E',
+                                                      command=self.Message_close)
         self.head_label_message.grid(row=0, column=0, columnspan=2)
         self.safe_settings_button_message.grid(row=1, column=0, columnspan=2)
         self.master.mainloop()
@@ -251,13 +240,6 @@ class App:
     def safe_settings_info(self):
         # Einstellungsframe schließen
         self.info_frame.destroy()
-        # Hauptframe starten
-        self.set_main_frame()
-
-    # Zum Hauptfenster zurückkehren
-    def safe_settings_Prt(self):
-        # Einstellungsframe schließen
-        self.Prt_frame.destroy()
         # Hauptframe starten
         self.set_main_frame()
 
