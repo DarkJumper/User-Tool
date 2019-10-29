@@ -1,9 +1,8 @@
 import tkinter as tk
-from tkinter import filedialog
 from datetime import *
-import FGR_Rename
 import TrendAuslesen
 import PRT_confi
+import Grafik_Umbennen
 
 
 # Klasse definieren
@@ -26,7 +25,7 @@ class App:
         self.SFP_button = tk.Button(self.main_frame, text="SFP Auswerten", height=1, width=20, background='#58ACFA',
                                     command=self.SFP_Auswerten)
         self.rename_button = tk.Button(self.main_frame, text="Rename Grafik", height=1, width=20, background='#2EFEC8',
-                                       command=self.Rename_Grafik_Frame)
+                                       command=Grafik_Umbennen.GrafikUmbennen)
         self.trend_button = tk.Button(self.main_frame, text="Trend Auswerten", height=1, width=20, background='#BFFF00',
                                       command=self.Trend_Auswerten)
         self.PRT_button = tk.Button(self.main_frame, text="PRT Erstellen", height=1, width=20, background='#FAAC58',
@@ -42,44 +41,6 @@ class App:
         self.copyright.grid(row=1, column=0)
         self.Info_button.grid(row=1, column=2)
         self.quit_button.grid(row=1, column=3)
-        # Fenster neustarten
-        self.master.mainloop()
-
-    # Einsellungsfenster starten
-    def Rename_Grafik_Frame(self):
-        # rename Frame Definieren
-        self.rename_frame = tk.Frame(self.master)
-        # Hauptframe schließen
-        self.main_frame.destroy()
-        self.rename_frame.pack()
-        # Widgets initialisieren
-        self.head_label_Prt = tk.Label(self.rename_frame, text='Grafikbilder Umbennen')
-        self.Durchsuchen_button = tk.Button(self.rename_frame, text="Durchsuchen", height=1, width=20,
-                                            command=self.file_dialog)
-        self.Rename_button = tk.Button(self.rename_frame, text="Auführen!", height=1, width=20,
-                                       activebackground='#40FF00',
-                                       command=self.Rename_Ausführen)
-        self.setting_entry = tk.Entry(self.rename_frame, width="50")
-        self.safe_settings_button = tk.Button(self.rename_frame, text="Zurück!", height=1, width=20,
-                                              background='#FE2E2E',
-                                              command=self.safe_settings_RENAME)
-        self.var = tk.StringVar()
-        self.var1 = tk.StringVar()
-        self.var2 = tk.StringVar()
-        self.Checkbox_PNG = tk.Checkbutton(self.rename_frame, text='PNG', offvalue="", onvalue="PNG", variable=self.var)
-        self.Checkbox_JPG = tk.Checkbutton(self.rename_frame, text='JPG', offvalue="", onvalue="JPG",
-                                           variable=self.var1)
-        self.Checkbox_GIF = tk.Checkbutton(self.rename_frame, text='GIF', offvalue="", onvalue="GIF",
-                                           variable=self.var2)
-        # Widgets positionieren
-        self.head_label_Prt.grid(row=0, column=0, columnspan=2)
-        self.Durchsuchen_button.grid(row=1, column=0)
-        self.setting_entry.grid(row=1, column=1, padx=5, pady=10, ipady=3)
-        self.Checkbox_PNG.grid(row=2, column=0)
-        self.Checkbox_JPG.grid(row=3, column=0)
-        self.Checkbox_GIF.grid(row=4, column=0)
-        self.Rename_button.grid(row=2, column=1)
-        self.safe_settings_button.grid(row=3, column=1)
         # Fenster neustarten
         self.master.mainloop()
 
@@ -150,24 +111,6 @@ class App:
         self.head_label_info.grid(row=0, column=0, columnspan=2)
         self.safe_settings_button_info.grid(row=3, column=1)
         self.master.mainloop()
-
-    def Rename_Ausführen(self):
-        Data_typ = self.var.get() + self.var1.get() + self.var2.get()
-        file_path = self.setting_entry.get()
-        rename = FGR_Rename.GraficRename(file_path, Data_typ)
-        rename.Search_Grafic_Name()
-
-    def file_dialog(self):
-        filename = filedialog.askopenfilename(filetypes=(("Csv files", "*.csv;*.csv")
-                                                         , ("All files", "*.*")))
-        self.setting_entry.insert(0, filename)
-
-    # Zum Hauptfenster zurückkehren
-    def safe_settings_RENAME(self):
-        # Einstellungsframe schließen
-        self.rename_frame.destroy()
-        # Hauptframe starten
-        self.set_main_frame()
 
     def Trend_Auswerten_Aufrufen(self):
         MSR = self.MSR_entry.get().split(",")
