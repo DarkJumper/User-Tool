@@ -51,16 +51,6 @@ class PrtConfig:
         self.Erstellen_laut_liste()
         self.status_Anzeigen.mainloop()
 
-    def Erstellen_laut_liste(self):
-        filename = os.getcwd() + "\config\\" + "data.csv"
-        with open(filename) as csvfile:
-            data = csv.reader(csvfile, delimiter=';')
-            for line in data:
-                print(line)
-        # Status Anzeige schließen
-        self.Status_Grafik["value"] = 50
-        # self.status_Anzeigen.destroy()
-
     # Hauptfenster schliesen
     def quit_app(self):
         self.master.destroy()
